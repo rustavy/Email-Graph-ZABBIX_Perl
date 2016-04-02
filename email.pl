@@ -15,7 +15,7 @@ my $senha     = 'zabbix';                                                       
 #################################################################################################################################
 
 ## Configuracao do Grafico ######################################################################################################
-my $periodo = 3600; # 1 hora em segundos                                                                                             #
+my $periodo = 3600; # 1 hora em segundos                                                                                        #
 my $width   = 600;  # Largura                                                                                                   #
 my $height  = 100;  # Altura                                                                                                    #
 my $stime   = strftime("%Y%m%d%H%M%S", localtime( time-3600 )); # Hora inicial do grafico [time-3600 = 1 hora atras]            #
