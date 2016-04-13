@@ -1,5 +1,28 @@
 #!/usr/bin/perl
 
+# Envio de gráfico por email através do ZABBIX (Send zabbix alerts graph mail )
+#
+# 
+# Copyright (C) <2016>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Contacts:
+# Eracydes Carvalho (Sansão Simonton) - NOC Analyst - sansaoipb@gmail.com
+# Thiago Paz - NOC Analyst - thiagopaz1986@gmail.com
+
+
 use strict;
 use warnings;
 use MIME::Lite;
@@ -18,11 +41,12 @@ my $senha     = 'zabbix';                                                       
 my $periodo = 3600; # 1 hora em segundos                                                                                        #
 my $width   = 600;  # Largura                                                                                                   #
 my $height  = 100;  # Altura                                                                                                    #
+my $color   = '00C800'; # Cor do grafico em Hex. (sem tralha)                                                                   #
 my $stime   = strftime("%Y%m%d%H%M%S", localtime( time-3600 )); # Hora inicial do grafico [time-3600 = 1 hora atras]            #
 #################################################################################################################################
 
 ## Separando ItemID / Corpo do Email ############################################################################################
-my ($itemid, $email_corpo) = split /\#/, $ARGV[2], 2;                                                                           #
+my ($itemid, $itemname, $email_corpo) = split /\#/, $ARGV[2], 3;                                                                #
 #################################################################################################################################
 
 #################################################################################################################################
@@ -37,7 +61,7 @@ $mech->field(password => $senha);                                               
 $mech->click();                                                                                                                 #
 #$mech->content->as_string;                                                                                                     #
                                                                                                                                 #
-my $png = $mech->get("$server_ip/chart.php?period=$periodo&itemids%5B0%5D=$itemid&stime=$stime&width=$width&height=$height");   #
+my $png = $mech->get("$server_ip/chart3.php?name=$itemname&period=$periodo&width=$width&height=$height&stime=$stime&items[0][itemid]=$itemid&items[0][drawtype]=5&items[0][color]=$color");
                                                                                                                                 #
 open my $image, '>', $graph or die $!;                                                                                          #
 $image->print($png->decoded_content);                                                                                           #
@@ -66,7 +90,6 @@ else                                                                            
 ## Decodificando o Assunto do Email como UTF-8
 utf8::decode($ARGV[1]);
 
-
 ## Envio do email
 my $msg = MIME::Lite->new(
                  From    => 'ZABBIX <noc@monitoramento.com>',
@@ -79,7 +102,7 @@ my $msg = MIME::Lite->new(
                             <body>
                             <p>$saudacao,</p>
                             <p>$email_corpo</p>
-                            <p> <img src="cid:grafico.png"></p>
+                            <p><img src="cid:grafico.png"></p>
                             </body>}
                  );
     $msg->attach(Type    => 'AUTO',
