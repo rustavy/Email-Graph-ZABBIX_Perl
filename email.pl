@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Envio de gráfico por email através do ZABBIX (Send zabbix alerts graph mail )
+# Envio de gráfico por email através do ZABBIX (Send zabbix alerts graph mail)
 #
 # 
 # Copyright (C) <2016>
@@ -22,7 +22,6 @@
 # Eracydes Carvalho (Sansão Simonton) - NOC Analyst - sansaoipb@gmail.com
 # Thiago Paz - NOC Analyst - thiagopaz1986@gmail.com
 
-
 use strict;
 use warnings;
 use MIME::Lite;
@@ -38,20 +37,17 @@ my $senha     = 'zabbix';                                                       
 #################################################################################################################################
 
 ## Configuracao do Grafico ######################################################################################################
-my $periodo = 3600; # 1 hora em segundos                                                                                        #
 my $width   = 600;  # Largura                                                                                                   #
 my $height  = 100;  # Altura                                                                                                    #
-my $color   = '00C800'; # Cor do grafico em Hex. (sem tralha)                                                                   #
 my $stime   = strftime("%Y%m%d%H%M%S", localtime( time-3600 )); # Hora inicial do grafico [time-3600 = 1 hora atras]            #
 #################################################################################################################################
 
-## Separando ItemID / Corpo do Email ############################################################################################
-my ($itemid, $itemname, $email_corpo) = split /\#/, $ARGV[2], 3;                                                                #
+## Separando argumentos #########################################################################################################
+my ($itemname, $itemid, $color, $periodo, $email_corpo) = split /\#/, $ARGV[2], 5;                                              #
 #################################################################################################################################
 
 #################################################################################################################################
 my $graph = "/tmp/$itemid.png";                                                                                                 #
-                                                                                                                                #
                                                                                                                                 #
 my $mech = WWW::Mechanize->new();                                                                                               #
 $mech->cookie_jar(HTTP::Cookies->new());                                                                                        #
@@ -59,7 +55,6 @@ $mech->get("$server_ip/index.php?login=1");                                     
 $mech->field(name => $usuario);                                                                                                 #
 $mech->field(password => $senha);                                                                                               #
 $mech->click();                                                                                                                 #
-#$mech->content->as_string;                                                                                                     #
                                                                                                                                 #
 my $png = $mech->get("$server_ip/chart3.php?name=$itemname&period=$periodo&width=$width&height=$height&stime=$stime&items[0][itemid]=$itemid&items[0][drawtype]=5&items[0][color]=$color");
                                                                                                                                 #
@@ -85,34 +80,54 @@ else                                                                            
 }                                                                                                                               #
 #################################################################################################################################
 
-
-
-## Decodificando o Assunto do Email como UTF-8
+#Decodificando UTF-8
 utf8::decode($ARGV[1]);
 
-## Envio do email
+if ($itemname !~ m/^LOG.*$/i)
+{
 my $msg = MIME::Lite->new(
-                 From    => 'ZABBIX <noc@monitoramento.com>',
-                 To      => $ARGV[0],
-                 Subject => encode('MIME-Header',$ARGV[1]),
-                 Type    => 'multipart/related'
-                 );
-    $msg->attach(Type    => 'text/html',
-                 Data    => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-                            <body>
-                            <p>$saudacao,</p>
-                            <p>$email_corpo</p>
-                            <p><img src="cid:grafico.png"></p>
-                            </body>}
-                 );
-    $msg->attach(Type    => 'AUTO',
-                 Id      => 'grafico.png',
-                 Path    => $graph,
-                 );
+			From    => 'ZABBIX <noc@monitoramento.com>',
+			To      => $ARGV[0],
+			Subject => encode('MIME-Header',$ARGV[1]),
+			Type    => 'multipart/related'
+        		);
+	$msg->attach(Type => 'text/html',
+				Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+				<body>
+				<p>$saudacao,</p>
+				<p>$email_corpo</p>
+				<p><img src="cid:grafico.png"</p>
+				</body>}
+				);
+	$msg->attach(Type => 'AUTO',
+	Id   => 'grafico.png',
+	Path => $graph,
+			);
 
+   $msg->send();
+}
+else
+{
+my $msg = MIME::Lite->new(
+			From    => 'ZABBIX <noc@monitoramento.com>',
+			To      => $ARGV[0],
+			Subject => encode('MIME-Header',$ARGV[1]),
+			Type    => 'multipart/related'
+        		);
+	$msg->attach(Type => 'text/html',
+				Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+				<body>
+				<p>$saudacao,</p>
+				<p>$email_corpo</p>
+				</body>}
+				);
+	$msg->attach(Type => 'AUTO',
+	Id   => 'grafico.png',
+	Path => $graph,
+			);
 
-    $msg->send();
-
+   $msg->send();
+}
 ## Excluindo o arquivo (Grafico)
    unlink ("$graph");
 
