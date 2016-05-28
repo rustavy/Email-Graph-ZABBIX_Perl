@@ -142,6 +142,8 @@ my $response = $client->call("$server_ip/api_jsonrpc.php", $json);
 
 my $authID = $response->content->{'result'};
 
+$itemid =~ s/^\s+//;
+
 $json =  {
    jsonrpc => '2.0',
    method  => 'item.get',
