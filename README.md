@@ -12,13 +12,13 @@ O "How to" foi testado no ZABBIX 2.4 e no 3.0 com base em Debian.
 <b>1 - </b>Ter o POSTFIX instalado e configurado, caso não tenha, <class="noteimportant"><a href="https://github.com/sansaoipb/Email_Gmail_ZABBIX" class="wikilink2" title="Instalar POSTFIX" rel="nofollow">Clique aqui</a>.
 
 
-<b>2 -</b> Baixar os módulos <code>MIME::Lite</code> e <code>WWW::Mechanize</code>.
+<b>2 -</b> Baixar os módulos <code>MIME::Lite</code>, <code>WWW::Mechanize</code> e <code>JSON::RPC::Client</code>.
 <br>
 Ex:<br>
 <blockquote> <p>CentOS 6.x e 7</p> </blockquote>
-<pre>yum install perl-WWW-Mechanize perl-MIME-Lite</pre>
+<pre>yum install perl-WWW-Mechanize perl-MIME-Lite perl-JSON-RPC</pre>
 <blockquote> <p>Debian</p> </blockquote>
-<pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl<br></pre>
+<pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>
 
 <b>3 -</b> Adicione o arquivo <code>“email.pl“</code> na pasta de scripts do ZABBIX.<br>
 Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</code> no <code>“zabbix_server.conf”</code> e aponte para uma de sua preferência.
@@ -41,9 +41,9 @@ A estrutura do comando para realização de teste é:<br>
 Ex:<br>
 <code>./email.pl SeuEmail@Provedor.com "Assunto" "NomeDoItem#123456#00C800#3600#CorpoDoEmail"</code><br>
 <b>OBS:</b><br>
-<b>1 - </b>”123456” é um número fictício para exemplificar, busque uma ID válida em seu ambiente para realização do teste;<br>
-<b>2 - </b>"00C800" é o verde "padrão" do zabbix em Hexadecimal;<br>
-<b>3 - </b>"3600" é o periodo de 1h do gráfico em segundos.<br><br>
+<b>1 – </b>”123456” é um número fictício para exemplificar, busque uma ID válida em seu ambiente para realização do teste;<br>
+<b>2 – </b>"00C800" é o verde "padrão" do zabbix em Hexadecimal;<br>
+<b>3 – </b>"3600" é o período de 1h do gráfico em segundos.<br><br>
 
 #Configurando o envio
 
@@ -54,7 +54,7 @@ Com o script adicionado no local indicado acima, precisamos realizar algumas con
 <img src="https://lh3.googleusercontent.com/-VShKQbvb-sI/VugV_Csop6I/AAAAAAAAHjA/pNAv2REt5h0RyuPqqDCSME-q9HS0cde5wCCo/s435-Ic42/Type.JPG"/><br><br>
 <blockquote> <p>Zabbix 3.0</p> </blockquote>
 <img src="https://lh3.googleusercontent.com/-fYsqsGPi_Ts/VwucDEi496I/AAAAAAAAIV8/PppgsqA6VlkJXdAgTTbZiS92FMOjCunWQCCo/s512-Ic42/Type_3.0.JPG"/><br><br>
-<b>OBS:</b> Na versão 3.0, se faz obrigatório a utilização das macros <code>{ALERT.SENDTO}</code>, <code>{ALERT.SUBJECT}</code> e <code>{ALERT.MESSAGE}</code>, em caso de dúvidas, leia a Documentação 
+<b>OBS:</b> Na versão 3.0, é obrigatório a utilização das macros <code>{ALERT.SENDTO}</code>, <code>{ALERT.SUBJECT}</code> e <code>{ALERT.MESSAGE}</code>, em caso de dúvidas, leia a Documentação 
 <class="noteimportant"><a href="https://www.zabbix.com/documentation/3.0/manual/config/notifications/media/script" class="wikilink2" title="Documentação Oficial" rel="nofollow">Aqui</a>.<br><br>
 
 <h3><a id="user-content-features" class="anchor" href="#features" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" role="img" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1h-1c-1.5 0-3-1.69-3-3.5s1.55-3.5 3-3.5h4c1.45 0 3 1.69 3 3.5 0 1.41-0.91 2.72-2 3.25v-1.16c0.58-0.45 1-1.27 1-2.09 0-1.28-1.02-2.5-2-2.5H4c-0.98 0-2 1.22-2 2.5s1 2.5 2 2.5z m9-3h-1v1h1c1 0 2 1.22 2 2.5s-1.02 2.5-2 2.5H9c-0.98 0-2-1.22-2-2.5 0-0.83 0.42-1.64 1-2.09v-1.16c-1.09 0.53-2 1.84-2 3.25 0 1.81 1.55 3.5 3 3.5h4c1.45 0 3-1.69 3-3.5s-1.5-3.5-3-3.5z"></path></svg></a>Configurando o usuário</h3>
@@ -90,5 +90,8 @@ Foi detectado um evento no equipamento {HOST.HOST}.</pre>
 
 #Conclusão
 
-1 - Este script é para agilizar a analise e ficar visualmente mais agradável o recebimento dos alarmes.<br><br>
-2 - Caso você monitore itens de log, e queira receber invés do gráfico vazio "sem dados", receber somente o texto descrito na "Mensagem Padrão", basta iniciar o nome do item com log, pode ser em caixa alta ou não.
+1 – Este script é para agilizar a analise e ficar visualmente mais agradável o recebimento dos alarmes.<br><br>
+2 – O script realiza uma consulta API mais ampla, e detecta automaticamente se o item é de caractere/log/texto, e não envia o gráfico "sem dados", somente o texto.
+
+<!--2 - Caso você monitore itens de log, e queira receber invés do gráfico vazio "sem dados", receber somente o texto descrito na "Mensagem Padrão", basta iniciar o nome do item com log, pode ser em caixa alta ou não. -->
+
