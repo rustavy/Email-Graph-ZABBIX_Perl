@@ -25,8 +25,9 @@
 use strict;
 use warnings;
 use MIME::Lite;
-use WWW::Mechanize; 
 use HTTP::Cookies;
+use WWW::Mechanize; 
+use JSON::RPC::Client;
 use Encode;
 use POSIX;
 
@@ -34,6 +35,7 @@ use POSIX;
 my $server_ip = 'http://127.0.0.1/zabbix'; # URL de acesso ao FRONT com "http://"                                               #
 my $usuario   = 'Admin';                                                                                                        #
 my $senha     = 'zabbix';                                                                                                       #
+my $client = new JSON::RPC::Client;                                                                                             #
 #################################################################################################################################
 
 ## Configuracao do Grafico ######################################################################################################
@@ -80,10 +82,8 @@ else                                                                            
 }                                                                                                                               #
 #################################################################################################################################
 
-#Decodificando UTF-8
 utf8::decode($ARGV[1]);
-
-if ($itemname !~ m/^LOG.*$/i)
+if ((&tipo == 0) || (&tipo ==3))
 {
 my $msg = MIME::Lite->new(
 			From    => 'ZABBIX <noc@monitoramento.com>',
@@ -121,14 +121,53 @@ my $msg = MIME::Lite->new(
 				<p>$email_corpo</p>
 				</body>}
 				);
-	$msg->attach(Type => 'AUTO',
-	Id   => 'grafico.png',
-	Path => $graph,
-			);
-
-   $msg->send();
+	$msg->send();
 }
-## Excluindo o arquivo (Grafico)
-   unlink ("$graph");
+
+unlink ("$graph");
+
+   sub tipo
+{
+my $json = {
+   jsonrpc => '2.0',
+   method  => 'user.login',
+   params  => {
+      user  => $usuario  ,
+      password => $senha
+     },
+   id => 1
+  };
+
+my $response = $client->call("$server_ip/api_jsonrpc.php", $json);
+
+my $authID = $response->content->{'result'};
+
+$json =  {
+   jsonrpc => '2.0',
+   method  => 'item.get',
+   params  => {
+      output => ['value_type'],
+      itemids => $itemid
+     },
+   auth => $authID,
+   id => 2
+  };
+$response = $client->call("$server_ip/api_jsonrpc.php", $json);
+
+my $itemtype; 
+foreach my $get_itemtype (@{$response->content->{result}})
+{
+ $itemtype = $get_itemtype->{value_type}
+}
+$json = {
+   jsonrpc => '2.0',
+   method => 'user.logout',
+   params => [],
+   id => 3,
+   auth => $authID
+  };
+ $client->call("$server_ip/api_jsonrpc.php", $json);
+return $itemtype;
+}
 
 exit;
