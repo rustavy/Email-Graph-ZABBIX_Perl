@@ -1,5 +1,3 @@
-# Email_Graph_ZABBIX
-
 Em caso de dúvida, sugestão ou dificuldade junte-se a nós no <b>Grupo do Telegram</b> <class="noteimportant"><a href="https://telegram.me/joinchat/B7JjiwivOYVKq5gPNDqFSA" class="wikilink2" title="Ingressar no Grupo" rel="nofollow">Gráfico no Email</a>.
 
 Envio de itens alarmados no ZABBIX por email com gráficos.<br>
@@ -9,10 +7,10 @@ O "How to" foi testado no ZABBIX 2.4 e no 3.0 com base em Debian.
 <br>
 
 #Requisitos:
-<b>1 - </b>Ter o POSTFIX instalado e configurado, caso não tenha, <class="noteimportant"><a href="https://github.com/sansaoipb/Email_Gmail_ZABBIX" class="wikilink2" title="Instalar POSTFIX" rel="nofollow">Clique aqui</a>.
+<b>1 – </b>Ter o POSTFIX instalado e configurado, caso não tenha, <class="noteimportant"><a href="https://github.com/sansaoipb/Email_Gmail_ZABBIX" class="wikilink2" title="Instalar POSTFIX" rel="nofollow">Clique aqui</a>.
 
 
-<b>2 -</b> Baixar os módulos <code>MIME::Lite</code>, <code>WWW::Mechanize</code> e <code>JSON::RPC::Client</code>.
+<b>2 – </b> Baixar os módulos <code>MIME::Lite</code>, <code>WWW::Mechanize</code> e <code>JSON::RPC::Client</code>.
 <br>
 Ex:<br>
 <blockquote> <p>CentOS 6.x e 7</p> </blockquote>
@@ -20,11 +18,11 @@ Ex:<br>
 <blockquote> <p>Debian</p> </blockquote>
 <pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>
 
-<b>3 -</b> Adicione o arquivo <code>“email.pl“</code> na pasta de scripts do ZABBIX.<br>
+<b>3 – </b> Crie/Adicione o arquivo <code>“email.pl“</code> na pasta de scripts do ZABBIX.<br>
 Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</code> no <code>“zabbix_server.conf”</code> e aponte para uma de sua preferência.
 <br>
-<br>
-
+<b>OBS:</b> Para dar as permissões necessárias no arquivo <code>“email.pl“</code>, entre na pasta onde o script está, execute a linha abaixo:<br>
+<pre>sudo chmod +x email.pl ; sudo chown zabbix. email.pl</pre>
 #Edite os parâmetros:
 
 <ul class="task-list">
@@ -39,7 +37,7 @@ Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</
 A estrutura do comando para realização de teste é:<br>
 <b>Script, Email, Assunto, Nome-do-Item#ID-do-Item#CorEmHex#PeriodoDoGrafico#CorpoDoEmail.</b><br>
 Ex:<br>
-<code>./email.pl SeuEmail@Provedor.com "Assunto" "NomeDoItem#123456#00C800#3600#CorpoDoEmail"</code><br>
+<pre>./email.pl SeuEmail@Provedor.com "Assunto" "NomeDoItem#123456#00C800#3600#CorpoDoEmail"<br></pre>
 <b>OBS:</b><br>
 <b>1 – </b>”123456” é um número fictício para exemplificar, busque uma ID válida em seu ambiente para realização do teste;<br>
 <b>2 – </b>"00C800" é o verde "padrão" do zabbix em Hexadecimal;<br>
@@ -92,6 +90,5 @@ Foi detectado um evento no equipamento {HOST.HOST}.</pre>
 
 1 – Este script é para agilizar a analise e ficar visualmente mais agradável o recebimento dos alarmes.<br><br>
 2 – O script realiza uma consulta API mais ampla, e detecta automaticamente se o item é de caractere/log/texto, e não envia o gráfico "sem dados", somente o texto.
-
 <!--2 - Caso você monitore itens de log, e queira receber invés do gráfico vazio "sem dados", receber somente o texto descrito na "Mensagem Padrão", basta iniciar o nome do item com log, pode ser em caixa alta ou não. -->
 
