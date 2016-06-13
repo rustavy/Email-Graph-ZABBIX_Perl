@@ -32,16 +32,16 @@ use Encode;
 use POSIX;
 
 ## Dados do Zabbix ##############################################################################################################
-my $server_ip = 'http://127.0.0.1/zabbix'; # URL de acesso ao FRONT com "http://"                                               #
-my $usuario   = 'Admin';                                                                                                        #
-my $senha     = 'zabbix';                                                                                                       #
-my $client = new JSON::RPC::Client;                                                                                             #
+my $server_ip 	= 'http://127.0.0.1/zabbix'; # URL de acesso ao FRONT com "http://"                                             #
+my $usuario   	= 'Admin';                                                                                                      #
+my $senha     	= 'zabbix';                                                                                                     #
+my $client 	= new JSON::RPC::Client;                                                                                        #
 #################################################################################################################################
 
 ## Configuracao do Grafico ######################################################################################################
-my $width   = 600;  # Largura                                                                                                   #
-my $height  = 100;  # Altura                                                                                                    #
-my $stime   = strftime("%Y%m%d%H%M%S", localtime( time-3600 )); # Hora inicial do grafico [time-3600 = 1 hora atras]            #
+my $width   	= 600;  # Largura                                                                                               #
+my $height  	= 100;  # Altura                                                                                                #
+my $stime   	= strftime("%Y%m%d%H%M%S", localtime( time-3600 )); # Hora inicial do grafico [time-3600 = 1 hora atras]        #
 #################################################################################################################################
 
 ## Separando argumentos #########################################################################################################
@@ -82,94 +82,95 @@ else                                                                            
 }                                                                                                                               #
 #################################################################################################################################
 
+#Decodificando o UTF-8
 utf8::decode($ARGV[1]);
-if ((&tipo == 0) || (&tipo == 3))
-{
-my $msg = MIME::Lite->new(
-			From    => 'ZABBIX <noc@monitoramento.com>',
-			To      => $ARGV[0],
-			Subject => encode('MIME-Header',$ARGV[1]),
-			Type    => 'multipart/related'
-        		);
-	$msg->attach(Type => 'text/html',
-				Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
-				<body>
-				<p>$saudacao,</p>
-				<p>$email_corpo</p>
-				<p><img src="cid:grafico.png"</p>
-				</body>}
-				);
-	$msg->attach(Type => 'AUTO',
-	Id   => 'grafico.png',
-	Path => $graph,
-			);
 
-   $msg->send();
+if ((&tipo == 0) || (&tipo == 3)) {
+
+	my $msg = MIME::Lite->new(
+					From    => 'ZABBIX <noc@monitoramento.com>',
+					To      => $ARGV[0],
+					Subject => encode('MIME-Header',$ARGV[1]),
+					Type    => 'multipart/related'
+	);
+	$msg->attach(
+			Type => 'text/html',
+			Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+			<body>
+			<p>$saudacao,</p>
+			<p>$email_corpo</p>
+			<p><img src="cid:grafico.png"></p>
+			</body>}
+	);
+	$msg->attach(
+			Type => 'AUTO',
+			Id   => 'grafico.png',
+			Path => $graph,
+	);
+	$msg->send();
 }
-else
-{
-my $msg = MIME::Lite->new(
-			From    => 'ZABBIX <noc@monitoramento.com>',
-			To      => $ARGV[0],
-			Subject => encode('MIME-Header',$ARGV[1]),
-			Type    => 'multipart/related'
-        		);
-	$msg->attach(Type => 'text/html',
-				Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
-				<body>
-				<p>$saudacao,</p>
-				<p>$email_corpo</p>
-				</body>}
-				);
+else {
+	my $msg = MIME::Lite->new(
+					From    => 'ZABBIX <noc@monitoramento.com>',
+					To      => $ARGV[0],
+					Subject => encode('MIME-Header',$ARGV[1]),
+					Type    => 'multipart/related'
+        );
+	$msg->attach(
+			Type => 'text/html',
+			Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+			<body>
+			<p>$saudacao,</p>
+			<p>$email_corpo</p>
+			</body>}
+	);
 	$msg->send();
 }
 
 unlink ("$graph");
 
-   sub tipo
+sub tipo
 {
-my $json = {
-   jsonrpc => '2.0',
-   method  => 'user.login',
-   params  => {
-      user  => $usuario  ,
-      password => $senha
-     },
-   id => 1
-  };
+	my $json = {
+			jsonrpc => '2.0',
+			method  => 'user.login',
+			params  => {
+					user  => $usuario,
+					password => $senha
+			},
+			id => 1
+	};
 
-my $response = $client->call("$server_ip/api_jsonrpc.php", $json);
+	my $response = $client->call("$server_ip/api_jsonrpc.php", $json);
+	my $authID = $response->content->{'result'};
+	$itemid =~ s/^\s+//;
 
-my $authID = $response->content->{'result'};
+	$json =  {
+			jsonrpc => '2.0',
+			method  => 'item.get',
+			params  => {
+					output => ['value_type'],
+					itemids => $itemid
+			},
+			auth => $authID,
+			id => 2
+	};
+	
+	$response = $client->call("$server_ip/api_jsonrpc.php", $json);
 
-$itemid =~ s/^\s+//;
-
-$json =  {
-   jsonrpc => '2.0',
-   method  => 'item.get',
-   params  => {
-      output => ['value_type'],
-      itemids => $itemid
-     },
-   auth => $authID,
-   id => 2
-  };
-$response = $client->call("$server_ip/api_jsonrpc.php", $json);
-
-my $itemtype; 
-foreach my $get_itemtype (@{$response->content->{result}})
-{
- $itemtype = $get_itemtype->{value_type}
-}
-$json = {
-   jsonrpc => '2.0',
-   method => 'user.logout',
-   params => [],
-   id => 3,
-   auth => $authID
-  };
- $client->call("$server_ip/api_jsonrpc.php", $json);
-return $itemtype;
+	my $itemtype; # Variável declarada para receber o valor do hostid
+	foreach my $get_itemtype (@{$response->content->{result}}) {
+		$itemtype = $get_itemtype->{value_type}
+	}
+	$json = {
+			jsonrpc => '2.0',
+			method => 'user.logout',
+			params => [],
+			id => 3,
+			auth => $authID
+	};
+	$client->call("$server_ip/api_jsonrpc.php", $json);
+	return $itemtype;
 }
 
 exit;
