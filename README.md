@@ -18,11 +18,14 @@ Ex:<br>
 <blockquote> <p>Debian</p> </blockquote>
 <pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>
 
-<b>3 – </b> Crie/Adicione o arquivo <code>“email.pl“</code> na pasta de scripts do ZABBIX.<br>
+<b>3 – </b> Entre na pasta de scripts do ZABBIX, faça o download do script <code>“email.pl“</code> através do comando:
+<br>
+<pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email.pl</pre>
+<br>
 Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</code> no <code>“zabbix_server.conf”</code> e aponte para uma de sua preferência.
 <br>
-<b>OBS:</b> Para dar as permissões necessárias no arquivo <code>“email.pl“</code>, entre na pasta onde o script está, execute a linha abaixo:<br>
-<pre>sudo chmod +x email.pl ; sudo chown zabbix. email.pl</pre>
+<b>OBS:</b> Dê permissão de execução no arquivo <code>“email.pl“</code>, para isso entre na pasta onde o script está, execute a linha abaixo:<br>
+<pre>sudo chmod +x email.pl</pre>
 #Edite os parâmetros:
 
 <ul class="task-list">
