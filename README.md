@@ -21,7 +21,6 @@ Ex:<br>
 <b>3 – </b> Entre na pasta de scripts do ZABBIX, faça o download do script <code>“email.pl“</code> através do comando:
 <br>
 <pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email.pl</pre>
-<br>
 Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</code> no <code>“zabbix_server.conf”</code> e aponte para uma de sua preferência.
 <br>
 <b>OBS:</b> Dê permissão de execução no arquivo <code>“email.pl“</code>, para isso entre na pasta onde o script está, execute a linha abaixo:<br>
