@@ -16,7 +16,12 @@ Ex:<br>
 <blockquote> <p>CentOS 6.x e 7</p> </blockquote>
 <pre>yum install perl-WWW-Mechanize perl-MIME-Lite perl-JSON-RPC</pre>
 <blockquote> <p>Debian</p> </blockquote>
-<pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>
+
+<pre>$ sudo cpan</pre>
+<pre> cpan[1]> install MIME::Lite WWW::Mechanize JSON::RPC::Client</pre>
+Depois “exit” para sair.
+
+<!--<pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>-->
 
 <b>3 – </b> Entre na pasta de scripts do ZABBIX, faça o download do script <code>“email.pl“</code> através do comando:
 <br>
