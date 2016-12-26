@@ -34,13 +34,17 @@ Ex:<br>
 
 <b>3 – </b> Localize a pasta de script do ZABBIX, dependendo da forma que você o instalou (compilando ou por pacote) estará em <code>“/usr/local/share/zabbix/alertscripts/”</code>  ou <code>“/usr/lib/zabbix/alertscripts/”</code>, e faça o download do script <code>“email.pl“</code> através do comando:
 <br>
+
+<pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email-teste.pl</pre>
 <pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email.pl</pre>
+
 Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</code> no <code>“zabbix_server.conf”</code> e aponte para uma de sua preferência.
 <br>
 
-<b>OBS:</b> Dê permissão de execução no arquivo <code>“email.pl“</code>, para isso entre na pasta onde o script está, execute a linha abaixo:<br>
+<b>OBS:</b> Dê permissão de execução nos arquivos <code>“email.pl“</code> e <code>email-teste.pl</code>, para isso entre na pasta onde o script está, execute a linha abaixo:<br>
 
-<pre>sudo chmod +x email.pl</pre>
+<pre>sudo chmod +x email*</pre>
+
 #Edite os parâmetros:
 
 <ul class="task-list">
