@@ -28,7 +28,6 @@ use MIME::Lite;
 use HTTP::Cookies;
 use WWW::Mechanize; 
 use JSON::RPC::Client;
-use Data::Dumper;
 use Encode;
 use POSIX;
 
@@ -41,15 +40,18 @@ my ($json, $response, $authID);
 #################################################################################################################################
 
 ## Configuracao do Grafico ######################################################################################################
-my $width   = 600;  # Largura
-my $height  = 100;  # Altura
+my $color   = '00C800'; # Cor do grafico em Hex. (sem tralha)
+my $period  = 3600; # 1 hora em segundos
+my $height  = 200;  # Altura
+my $width   = 900;  # Largura
 my $stime   = strftime("%Y%m%d%H%M%S", localtime( time-3600 )); # Hora inicial do grafico [time-3600 = 1 hora atras]
 #################################################################################################################################
 
-## Separando argumentos #########################################################################################################
-my ($itemname, $eventid, $itemid, $color, $period, $body) = split /\#/, $ARGV[2], 6;
-#################################################################################################################################
-$eventid =~ s/^\s+//;
+## Configuracao do Grafico ######################################################################################################
+my $itemid     = '23316';
+my $subject    = 'ALARME';
+my $itemname   = 'MEMORIA DISPONIVEL';
+my $body_mail  = 'Teste de envio';
 #################################################################################################################################
 my $graph = "/tmp/$itemid.png";
 
@@ -71,9 +73,9 @@ $image->close;
 my $hour = strftime '%H', localtime;
 my $salutation;
 if ($hour < "12")
-{
+{  
 	$salutation = "Bom dia"; #Good Morning
-}
+}  
 elsif ($hour >= "18")
 {
 	$salutation = "Boa noite"; #Good Night
@@ -84,15 +86,14 @@ else
 }
 #################################################################################################################################
 
-utf8::decode($ARGV[1]);
-utf8::decode($body);
+utf8::decode($subject);
 
 if ((&tipo == 0) || (&tipo == 3)) {
 
 	my $msg = MIME::Lite->new(
 					From    => 'ZABBIX <noc@monitoramento.com>',
 					To      => $ARGV[0],
-					Subject => encode('MIME-Header',$ARGV[1]),
+					Subject => encode('MIME-Header',$subject),
 					Type    => 'multipart/related'
 	);
 	$msg->attach(
@@ -100,7 +101,7 @@ if ((&tipo == 0) || (&tipo == 3)) {
 			Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 			<body>
 			<p>$salutation,</p>
-			<p>$body</p>
+			<p>$body_mail</p>
 			<p><img src="cid:grafico.png"></p>
 			</body>}
 	);
@@ -110,16 +111,12 @@ if ((&tipo == 0) || (&tipo == 3)) {
 			Path => $graph,
 	);
 	$msg->send();
-			if ($msg->last_send_successful) {
-			&ack; 
-			&logout;
-			}
 }
 else {
 	my $msg = MIME::Lite->new(
 					From    => 'ZABBIX <noc@monitoramento.com>',
 					To      => $ARGV[0],
-					Subject => encode('MIME-Header',$ARGV[1]),
+					Subject => encode('MIME-Header',$subject),
 					Type    => 'multipart/related'
 );
 	$msg->attach(
@@ -127,14 +124,10 @@ else {
 			Data => qq{<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 			<body>
 			<p>$salutation,</p>
-			<p>$body</p>
+			<p>$body_mail</p>
 			</body>}
 	);
 	$msg->send();
-			if ($msg->last_send_successful) {
-			&ack; 
-			&logout;
-			}
 }
 
 unlink ("$graph");
@@ -151,8 +144,7 @@ sub tipo {
   	};
 
 	$response = $client->call("$server_ip/api_jsonrpc.php", $json);
-	#print Dumper ($response);
-	
+
 	$authID = $response->content->{'result'};
 
 	$itemid =~ s/^\s+//;
@@ -168,40 +160,12 @@ sub tipo {
 		id => 2
   	};
 	$response = $client->call("$server_ip/api_jsonrpc.php", $json);
-	#print Dumper ($response);
-	
+
 	my $itemtype; 
 	foreach my $get_itemtype (@{$response->content->{result}}) {	
 		$itemtype = $get_itemtype->{value_type}
 	}
 	return $itemtype;
-}
-
-sub ack {
-	$json = {
-		jsonrpc => '2.0',
-		method  => 'event.acknowledge',
-		params  => {
-			eventids  => $eventid,
-			message => "Email enviado com sucesso para $ARGV[0]"
-		},
-		auth => $authID,
-		id => 3
-	};
-
-	$response = $client->call("$server_ip/api_jsonrpc.php", $json);
-	#print Dumper ($response);
-}
-
-sub logout {
-	$json = {
-   		jsonrpc => '2.0',
-		method => 'user.logout',
-		params => [],
-		id => 4,
-		auth => $authID
-  	};
-	$client->call("$server_ip/api_jsonrpc.php", $json);
 }
 
 exit;
