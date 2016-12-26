@@ -61,7 +61,7 @@ Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</
 Script para realização do teste:<br>
 <b>Script, Email.</b><br>
 Ex:<br>
-<pre>./email-teste.pl SeuEmail@Provedor.com </pre><br>
+<pre>./email-teste.pl SeuEmail@Provedor.com </pre>
 
 <b>OBS:</b><br>
 <b>1 – </b>Caso tenha trocado o template do "Zabbix server", será necessário alterar o campo "my $itemid" (na linha 51) para um itemid válido do seu ambiente.<br>
@@ -69,7 +69,7 @@ Ex:<br>
 <b>2 – </b>"00C800" é o verde "padrão" do zabbix em Hexadecimal;<br>
 <b>3 – </b>"3600" é o período de 1h do gráfico em segundos.<br><br> -->
 
-#Configurando o envio
+#Configurando o envio:
 
 Com o script adicionado no local indicado acima, precisamos realizar algumas configurações no Front do ZABBIX, no <i>"Tipo de Mídia"</i>, (em Administração  > Tipo de Mídia) e a <i>"Ação"</i> (em Configuração  > Ações).
 
