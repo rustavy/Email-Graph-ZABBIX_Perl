@@ -60,7 +60,7 @@ Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</
 Script para realização do teste:<br>
 <b>Script, Email.</b><br>
 Ex:<br>
-<pre>./email.pl SeuEmail@Provedor.com </pre><br>
+<pre>./email-teste.pl SeuEmail@Provedor.com </pre><br>
 
 <!-- <b>OBS:</b><br>
 <b>1 – </b>”123456” é um número fictício para exemplificar, busque uma ID válida em seu ambiente para realização do teste;<br>
