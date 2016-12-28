@@ -36,8 +36,7 @@ Ex:<br>
 <b>3 – </b> Localize a pasta de script do ZABBIX, dependendo da forma que você o instalou (compilando ou por pacote) estará em <code>“/usr/local/share/zabbix/alertscripts/”</code>  ou <code>“/usr/lib/zabbix/alertscripts/”</code>, e faça o download do script <code>“email.pl“</code> através do comando:
 <br>
 
-<pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email-teste.pl</pre>
-<pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email.pl</pre>
+<pre>wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email-teste.pl ; wget https://raw.githubusercontent.com/sansaoipb/Email-Graph-ZABBIX/master/email.pl</pre>
 
 Caso queira mudar a pasta padrão, edite a linha <code>“AlertScriptsPath=”</code> no <code>“zabbix_server.conf”</code> e aponte para uma de sua preferência.
 <br>
