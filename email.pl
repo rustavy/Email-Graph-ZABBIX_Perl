@@ -154,7 +154,6 @@ sub tipo {
 	#print Dumper ($response);
 	
 	$authID = $response->content->{'result'};
-
 	$itemid =~ s/^\s+//;
 
 	$json = {
