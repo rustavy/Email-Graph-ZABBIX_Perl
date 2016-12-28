@@ -5,8 +5,7 @@ Envio de alarmes no ZABBIX por Email com gráficos.<br>
 
 O "How to" foi testado no ZABBIX 2.4, 3.0 e no 3.2 no Debian/Ubuntu e CentOS 6.x e 7, caso não utilize estas distros procure os pacotes descritos para sua necessidade.
 
-<br>
-<br>
+
 #Requisitos:
 
 <b>1 – </b>Ter o POSTFIX instalado e configurado, caso não tenha, <class="noteimportant"><a href="https://github.com/sansaoipb/Email_Gmail_ZABBIX" class="wikilink2" title="Instalar POSTFIX" rel="nofollow">Clique aqui</a>.
