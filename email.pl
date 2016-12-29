@@ -152,7 +152,15 @@ sub tipo {
 
 	$response = $client->call("$server_ip/api_jsonrpc.php", $json);
 	#print Dumper ($response);
-	
+	unless ($response){
+    print "<<< URL declarada para o front errada >>>\n";
+    exit;
+    }
+        unless ($response->content->{'result'}){
+        print "<<< Usuário ou senha inválido >>>\n";
+        exit;
+        }	
+		
 	$authID = $response->content->{'result'};
 	$itemid =~ s/^\s+//;
 
@@ -169,11 +177,16 @@ sub tipo {
 	$response = $client->call("$server_ip/api_jsonrpc.php", $json);
 	#print Dumper ($response);
 	
-	my $itemtype; 
-	foreach my $get_itemtype (@{$response->content->{result}}) {	
-		$itemtype = $get_itemtype->{value_type}
-	}
-	return $itemtype;
+        my $itemtype;
+        foreach my $get_itemtype (@{$response->content->{result}}) {
+                $itemtype = $get_itemtype->{value_type}
+        }
+        unless ($itemtype){
+                print "<<< Item inválido ou USER do front sem permissão de leituta no host >>>\n";
+                exit;
+        }
+
+        return $itemtype;
 }
 
 sub ack {
