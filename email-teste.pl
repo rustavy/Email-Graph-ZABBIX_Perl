@@ -54,6 +54,11 @@ my $subject    = 'ALARME';
 my $itemname   = 'MEMORIA DISPONIVEL';
 my $body_mail  = 'Teste de envio';
 #################################################################################################################################
+unless ($itemid){
+                print "<<< Item inválido ou USER do front sem permissão de leitura no host >>>\n";
+                exit;
+}
+
 my $graph = "/tmp/$itemid.png";
 
 my $mech = WWW::Mechanize->new();
@@ -175,8 +180,8 @@ sub tipo {
         foreach my $get_itemtype (@{$response->content->{result}}) {
                 $itemtype = $get_itemtype->{value_type}
         }
-        unless ($itemtype){
-                print "<<< Item inválido ou USER do front sem permissão de leituta no host >>>\n";
+        unless (defined $itemtype){
+                print "<<< Item inválido ou USER do front sem permissão de leitura no host >>>\n";
                 exit;
         }
 
