@@ -30,7 +30,7 @@ Ex:<br>
 <!--<blockquote> <p> Debian/Ubuntu</p> </blockquote>
 <pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>
 <blockquote> <p>CentOS 6.x e 7</p> </blockquote>
-<pre>yum install perl-WWW-Mechanize perl-MIME-Lite perl-JSON-RPC</pre> -->
+<pre>yum install perl-MIME-Lite perl-WWW-Mechanize perl-JSON-RPC</pre> -->
 
 <b>3 – </b> Localize a pasta de script do ZABBIX, dependendo da forma que você o instalou (compilando ou por pacote) estará em <code>“/usr/local/share/zabbix/alertscripts/”</code>  ou <code>“/usr/lib/zabbix/alertscripts/”</code>, e faça o download do script <code>“email.pl“</code> através do comando:
 <br>
