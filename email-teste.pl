@@ -168,7 +168,8 @@ sub tipo {
 	   	method  => 'item.get',
 		params  => {
 			output => ['value_type'],
-			itemids => $itemid
+			itemids => $itemid,
+                        webitems => $itemid
      		},
    		auth => $authID,
 		id => 2
