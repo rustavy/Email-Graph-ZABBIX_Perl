@@ -6,7 +6,7 @@ Envio de alarmes no ZABBIX por Email com gráficos.<br>
 O "How to" foi testado no ZABBIX 2.4, 3.0 e no 3.2 no Debian/Ubuntu e CentOS 6.x e 7, caso não utilize estas distros procure os pacotes descritos para sua necessidade.
 
 
-#Requisitos:
+# Requisitos:
 
 <b>1 – </b>Ter o POSTFIX instalado e configurado, caso não tenha, <a href="https://github.com/sansaoipb/Email_Gmail_ZABBIX" class="wikilink2" title="Instalar POSTFIX" rel="nofollow">Clique aqui</a>.
 
@@ -45,7 +45,7 @@ Dê permissão de execução nos arquivos <code>“email.pl“</code> e <code>em
 
 <pre>sudo chmod +x email*</pre>
 
-#Edite os parâmetros:
+# Edite os parâmetros:
 
 <ul class="task-list">
 <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked="checked" disabled="disabled"><font><font class=""> “my $server_ip” = 'http://127.0.0.1/zabbix' - URL de acesso ao FRONT com "http://" </font></font></li>
@@ -69,7 +69,7 @@ Caso tenha trocado o template do "Zabbix server", será necessário alterar o ca
 <b>2 – </b>"00C800" é o verde "padrão" do zabbix em Hexadecimal;<br>
 <b>3 – </b>"3600" é o período de 1h do gráfico em segundos.<br><br> -->
 
-#Configurando o envio:
+# Configurando o envio:
 
 Com o script adicionado no local indicado acima, precisamos realizar algumas configurações no Front do ZABBIX, no <i>"Tipo de Mídia"</i>, (em Administração  > Tipo de Mídia) e a <i>"Ação"</i> (em Configuração  > Ações).
 
@@ -116,7 +116,7 @@ Foi detectado um evento no equipamento <b>{HOST.HOST}</b>.</pre>
 <br>
 <br>
 
-#Conclusão
+# Conclusão
 
 1 – Este script é para agilizar a análise e ficar visualmente mais agradável o recebimento dos alarmes.<br><br>
 2 – O script realiza uma consulta API mais ampla, detecta automaticamente se o item é de caracter/log/texto, e não envia o gráfico "sem dados" somente o texto, ele dá "ack" no evento e informa quem foi notificado naquela ação.
