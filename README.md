@@ -115,7 +115,7 @@ Foi detectado um evento no equipamento <b>{HOST.HOST}</b>.</pre>
 2 – O script realiza uma consulta API mais ampla, detecta automaticamente se o item é de caracter/log/texto, e não envia o gráfico "sem dados" somente o texto, ele dá "ack" no evento e informa quem foi notificado naquela ação.
 
 <!--2 - Caso você monitore itens de log, e queira receber invés do gráfico vazio "sem dados", receber somente o texto descrito na "Mensagem Padrão", basta iniciar o nome do item com log, pode ser em caixa alta ou não. -->
-
+<br><br><br><br>
 
 
 # Doações
