@@ -99,7 +99,7 @@ Com o script adicionado no local indicado acima, precisamos realizar algumas con
 <blockquote> <p>Zabbix 2.4</p> </blockquote>
 <img src="https://lh3.googleusercontent.com/-VShKQbvb-sI/VugV_Csop6I/AAAAAAAAHjA/pNAv2REt5h0RyuPqqDCSME-q9HS0cde5wCCo/s435-Ic42/Type.JPG"/><br><br>
 
-<blockquote> <p>Zabbix 3.0</p> </blockquote>
+<blockquote> <p>Zabbix 3.0 / 3.2</p> </blockquote>
 <img src="https://lh3.googleusercontent.com/-fYsqsGPi_Ts/VwucDEi496I/AAAAAAAAIV8/PppgsqA6VlkJXdAgTTbZiS92FMOjCunWQCCo/s512-Ic42/Type_3.0.JPG"/><br><br>
 
 <b>OBS:</b><br>
