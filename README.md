@@ -31,7 +31,7 @@ Em caso de dúvida, sugestão ou dificuldade junte-se a nós no <b>Grupo do Tele
 
 Envio de alarmes no ZABBIX por Email com gráficos.<br>
 
-O "How to" foi testado no ZABBIX 2.4, 3.0 e no 3.2 no Debian/Ubuntu e CentOS 6.x e 7, caso não utilize estas distros procure os pacotes descritos para sua necessidade.
+O "How to" foi testado no ZABBIX 2.4, 3.0 e no 3.2 no Debian 8-9/Ubuntu 14-16 e CentOS 6.x e 7, caso não utilize estas distros procure os pacotes descritos para sua necessidade.
 
 
 # Requisitos:
@@ -44,13 +44,13 @@ O "How to" foi testado no ZABBIX 2.4, 3.0 e no 3.2 no Debian/Ubuntu e CentOS 6.x
 <br>
 Ex:<br>
 
-<blockquote> <p> Debian/Ubuntu / CentOS 6.x e 7</p> </blockquote>
+<blockquote> <p> Debian 8-9/Ubuntu 14-16 / CentOS 6.x e 7</p> </blockquote>
 <b>2.1 </b><pre>$ sudo cpan</pre>
 <b>2.2 </b><pre> cpan[1]> install MIME::Lite WWW::Mechanize JSON::RPC::Client</pre>
 <b>2.3 </b><pre> Depois “exit” para sair. </pre>
 
 
-<!--<blockquote> <p> Debian/Ubuntu</p> </blockquote>
+<!--<blockquote> <p> Debian 8 e 9/Ubuntu 14</p> </blockquote>
 <pre>$ sudo apt-get install libmime-lite-perl libwww-mechanize-perl libjson-rpc-perl<br></pre>
 <blockquote> <p>CentOS 6.x e 7</p> </blockquote>
 <pre>yum install perl-MIME-Lite perl-WWW-Mechanize perl-JSON-RPC</pre> -->
@@ -138,6 +138,15 @@ Foi detectado um evento no equipamento <b>{HOST.HOST}</b>.</pre>
 <img src="https://lh3.googleusercontent.com/-LFv2lVH0kkY/V3a0YZHS21I/AAAAAAAAI3o/pUhHpJ6BToc9_xhbvlOQhwrOYPClTJjkQCCo/s707/EmailResult.JPG"/>
 <br>
 <br>
+
+# Contribuição
+
+Este link você consegue criar de modelos para mensagens HTML, que foi indicado pelo amigo "Mario" <a href="https://t.me/ZXRTI" class="wikilink2" title="Conversar com ele" rel="nofollow">@ZXRTI</a>
+<br>
+<a href="https://html-online.com/editor/" class="wikilink2" title="Criador de HTML" rel="nofollow">Site para criação de modelos HTML</a>
+
+
+
 
 # Conclusão
 
