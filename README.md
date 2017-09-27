@@ -141,7 +141,7 @@ Foi detectado um evento no equipamento <b>{HOST.HOST}</b>.</pre>
 
 # Contribuição
 
-Este link você consegue criar de modelos para mensagens HTML, que foi indicado pelo amigo "Mario" <a href="https://t.me/ZXRTI" class="wikilink2" title="Conversar com ele" rel="nofollow">@ZXRTI</a>
+Neste link você consegue criar de modelos para mensagens HTML, que foi indicado pelo amigo "Mario" <a href="https://t.me/ZXRTI" class="wikilink2" title="Conversar com ele" rel="nofollow">@ZXRTI</a>
 <br>
 <a href="https://html-online.com/editor/" class="wikilink2" title="Criador de HTML" rel="nofollow">Site para criação de modelos HTML</a>
 
