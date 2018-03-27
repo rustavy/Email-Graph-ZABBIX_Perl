@@ -36,8 +36,11 @@ O "How to" foi testado no ZABBIX 2.4, 3.0, 3.2 e no 3.4 no Debian 8-9/Ubuntu 14-
 
 # Requisitos:
 
-<b>0 – </b> Estar logado com o user zabbix<br>
+<b>0 – </b> Estar logado com o user zabbix
 <br>
+<blockquote>Caso necessário, habilite como o comando abaixo e troque a senha:</blockquote>
+<pre>sudo usermod -s /bin/bash zabbix ; sudo passwd zabbix</pre>
+
 <b>1 – </b>Ter o POSTFIX instalado e configurado, caso não tenha, <a href="https://github.com/sansaoipb/Email_Gmail_ZABBIX" class="wikilink2" title="Instalar POSTFIX" rel="nofollow">Clique aqui</a>.
 
 <b>2 – </b> Baixar os módulos <code>MIME::Lite</code>, <code>WWW::Mechanize</code> e <code>JSON::RPC::Client</code>.
