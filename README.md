@@ -90,7 +90,7 @@ Ex:<br>
 <pre>./email-teste.pl SeuEmail@Provedor.com </pre>
 
 <b>OBS:</b><br>
-Caso tenha trocado o template do "Zabbix server", será necessário alterar o campo "my $itemid" (na linha 51) para um itemid válido do seu ambiente.<br>
+Caso tenha trocado o template do "Zabbix server", será necessário alterar o campo "my $itemid" (na linha 52) para um itemid válido do seu ambiente.<br>
 <!-- <b>1 – </b>”123456” é um número fictício para exemplificar, busque uma ID válida em seu ambiente para realização do teste;<br>
 <b>2 – </b>"00C800" é o verde "padrão" do zabbix em Hexadecimal;<br>
 <b>3 – </b>"3600" é o período de 1h do gráfico em segundos.<br><br> -->
