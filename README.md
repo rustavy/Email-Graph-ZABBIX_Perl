@@ -27,7 +27,7 @@
 -->
 
 # Email-Graph-ZABBIX
-Em caso de dúvida, sugestão ou dificuldade junte-se a nós no <b>Grupo do Telegram</b> <a href="https://t.me/email_telegram" class="wikilink2" title="Ingressar no Grupo" rel="nofollow">Gráfico no Email e Telegram</a>.
+Em caso de dúvida, sugestão ou dificuldade junte-se a nós no <b>Grupo do Telegram</b> <a href="https://t.me/joinchat/B7Jjiz-ttMgvu3zJKarK2w" class="wikilink2" title="Ingressar no Grupo" rel="nofollow">Gráfico no Email e Telegram</a>.
 
 Envio de alarmes no ZABBIX por Email com gráficos.<br>
 
