@@ -55,6 +55,16 @@ unless ($itemid){
                 print "<<< Item inválido ou USER do front sem permissão de leitura no host >>>\n";
                 exit;
 }
+# Added an expression to set the color and time, if it is not specified in the arguments
+unless ($color){
+                $color = '00FF00';
+}
+unless ($period){
+                $period = 10800;
+}
+
+# Convert time-shift argument to Zabbix 4.0 time-string
+$period = strftime("%Y-%m-%d %H:%M:%S", localtime( time-$period ));
 
 my $graph = "/tmp/$itemid.png";
 
@@ -65,7 +75,8 @@ $mech->field(name => $user);
 $mech->field(password => $password);
 $mech->click();
 
-my $png = $mech->get("$server_ip/chart3.php?name=$itemname&period=$period&width=$width&height=$height&stime=$stime&items[0][itemid]=$itemid&items[0][drawtype]=5&items[0][color]=$color");
+# String was changed to support Zabbix 4.0 url
+my $png = $mech->get("$server_ip/chart3.php?name=$itemname&to=now&width=$width&height=$height&from=$period&items[0][itemid]=$itemid&items[0][drawtype]=5&items[0][color]=$color");
 
 open my $image, '>', $graph or die $!;
 $image->print($png->decoded_content);
