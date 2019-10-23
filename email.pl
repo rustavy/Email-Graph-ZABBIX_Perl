@@ -27,7 +27,7 @@ use warnings;
 use MIME::Lite;
 use HTTP::Cookies;
 use WWW::Mechanize; 
-use JSON::RPC::Client;
+use JSON::RPC::Legacy::Client;
 use Data::Dumper;
 use Encode;
 use POSIX;
@@ -36,7 +36,7 @@ use POSIX;
 my $server_ip  = 'http://127.0.0.1/zabbix'; # URL de acesso ao FRONT com "http://"
 my $user       = 'Admin';
 my $password   = 'zabbix';
-my $client     = new JSON::RPC::Client;
+my $client     = new JSON::RPC::Legacy::Client;
 my ($json, $response, $authID);
 #################################################################################################################################
 
@@ -55,6 +55,13 @@ unless ($itemid){
                 print "<<< Item inválido ou USER do front sem permissão de leitura no host >>>\n";
                 exit;
 }
+unless ($color){
+                $color = '00FF00';
+}
+unless ($period){
+                $period = 10800;
+}
+$period = strftime("%Y-%m-%d %H:%M:%S", localtime( time-$period ));
 
 my $graph = "/tmp/$itemid.png";
 
@@ -65,7 +72,7 @@ $mech->field(name => $user);
 $mech->field(password => $password);
 $mech->click();
 
-my $png = $mech->get("$server_ip/chart3.php?name=$itemname&period=$period&width=$width&height=$height&stime=$stime&items[0][itemid]=$itemid&items[0][drawtype]=5&items[0][color]=$color");
+my $png = $mech->get("$server_ip/chart3.php?name=$itemname&to=now&width=$width&height=$height&from=$period&items[0][itemid]=$itemid&items[0][drawtype]=5&items[0][color]=$color");
 
 open my $image, '>', $graph or die $!;
 $image->print($png->decoded_content);
@@ -77,15 +84,15 @@ my $hour = strftime '%H', localtime;
 my $salutation;
 if ($hour < "12")
 {
-	$salutation = "Bom dia"; #Good Morning
+	$salutation = "Good Morning"; #Good Morning
 }
 elsif ($hour >= "18")
 {
-	$salutation = "Boa noite"; #Good Night
+	$salutation = "Good Night"; #Good Night
 }
 else
 {
-	$salutation = "Boa tarde"; #Good Afternoon
+	$salutation = "Good Afternoon"; #Good Afternoon
 }
 #################################################################################################################################
 
